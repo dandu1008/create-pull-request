@@ -106,6 +106,7 @@ def process_event(github_token, github_repository, repo, branch, base):
     #print(push_result) #this is danau1008 testing
 
     # Create the pull request
+    print("Creating Pull Request for {} with reference base to {}".format(branch,base))
     github_repo = Github(github_token).get_repo(github_repository)
     try:
         pull_request = github_repo.create_pull(
