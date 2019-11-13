@@ -188,7 +188,8 @@ author_email = os.getenv('COMMIT_AUTHOR_EMAIL', author_email)
 author_name = os.getenv('COMMIT_AUTHOR_NAME', author_name)
 # Set git configuration
 print ("repo git")
-print (repo.git)
+print (json.dumps(repo))
+print (json.dumps(repo.git))
 set_git_config(repo.git, author_email, author_name)
 # Update URL for the 'origin' remote
 set_git_remote_url(repo.git, github_token, github_repository)
@@ -217,7 +218,7 @@ branch_prefix = os.getenv(
 # if base.startswith(branch_prefix):
 #     print("PR Branch '%s' is a base branch, Skipping." % base)
 #     sys.exit() 
-base = 'staging'
+base = "{repository['default_branch']}".format(**event_data)
 # Fetch an optional environment variable to determine the branch suffix
 branch_suffix = os.getenv('BRANCH_SUFFIX', 'short-commit-hash')
 if branch_suffix == "short-commit-hash":
