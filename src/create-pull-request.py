@@ -188,7 +188,7 @@ author_email = os.getenv('COMMIT_AUTHOR_EMAIL', author_email)
 author_name = os.getenv('COMMIT_AUTHOR_NAME', author_name)
 # Set git configuration
 print ("repo git")
-print (json.dumps(repo))
+print (repo)
 print (json.dumps(repo.git))
 set_git_config(repo.git, author_email, author_name)
 # Update URL for the 'origin' remote
