@@ -198,12 +198,13 @@ base_override = os.environ.get('PULL_REQUEST_BASE')
 # Set the base branch
 if base_override is not None:
     base = base_override
-    # checkout_branch(repo.git, True, base)
+    checkout_branch(repo.git, True, base)
 elif github_ref.startswith('refs/pull/'):
     # Switch to the merging branch instead of the merge commit
     base = os.environ['GITHUB_HEAD_REF']
     repo.git.checkout(base)
 else:
+    print ("github ref [11]: "+github_ref[11:] )
     base = github_ref[11:]
 
 # Skip if the current branch is a PR branch created by this action.
