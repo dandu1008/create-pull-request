@@ -100,9 +100,9 @@ def process_event(github_token, github_repository, repo, branch, base):
     pull_request_team_reviewers = os.environ.get('PULL_REQUEST_TEAM_REVIEWERS')
 
     # Push the local changes to the remote branch
-    #print("Pushing changes.") #this is danau1008 testing
-    #push_result = push_changes(repo.git, branch, commit_message) #this is danau1008 testing
-    #print(push_result) #this is danau1008 testing
+    print("Pushing changes.") #this is danau1008 testing
+    push_result = push_changes(repo.git, branch, commit_message) #this is danau1008 testing
+    print(push_result) #this is danau1008 testing
 
     # Create the pull request
     print("Creating Pull Request for {} with reference base to {}".format(branch,base))
@@ -169,12 +169,15 @@ def process_event(github_token, github_repository, repo, branch, base):
 
 
 # Fetch environment variables
+print ("Python process is initiated")
 github_token = os.environ['GITHUB_TOKEN']
 github_repository = os.environ['GITHUB_REPOSITORY']
 github_ref = os.environ['GITHUB_REF']
 event_name = os.environ['GITHUB_EVENT_NAME']
 # Get the JSON event data
 event_data = get_github_event(os.environ['GITHUB_EVENT_PATH'])
+print ("github event data")
+print (event_data)
 
 # Set the repo to the working directory
 repo = Repo(os.getcwd())
@@ -184,6 +187,8 @@ author_email, author_name = get_author_default(event_name, event_data)
 author_email = os.getenv('COMMIT_AUTHOR_EMAIL', author_email)
 author_name = os.getenv('COMMIT_AUTHOR_NAME', author_name)
 # Set git configuration
+print ("repo git")
+print (repo.git)
 set_git_config(repo.git, author_email, author_name)
 # Update URL for the 'origin' remote
 set_git_remote_url(repo.git, github_token, github_repository)
@@ -193,26 +198,26 @@ branch_prefix = os.getenv(
     'PULL_REQUEST_BRANCH',
     'create-pull-request/patch')
 # Fetch an optional base branch override
-base_override = os.environ.get('PULL_REQUEST_BASE')
+# base_override = os.environ.get('PULL_REQUEST_BASE')
 
-# Set the base branch
-if base_override is not None:
-    base = base_override
-    checkout_branch(repo.git, True, base)
-elif github_ref.startswith('refs/pull/'):
-    # Switch to the merging branch instead of the merge commit
-    base = os.environ['GITHUB_HEAD_REF']
-    repo.git.checkout(base)
-else:
-    print ("github ref [11]: "+github_ref[11:] )
-    base = github_ref[11:]
+# # Set the base branch
+# if base_override is not None:
+#     base = base_override
+#     checkout_branch(repo.git, True, base)
+# elif github_ref.startswith('refs/pull/'):
+#     # Switch to the merging branch instead of the merge commit
+#     base = os.environ['GITHUB_HEAD_REF']
+#     repo.git.checkout(base)
+# else:
+#     print ("github ref [11]: "+github_ref[11:] )
+#     base = github_ref[11:]
 
 # Skip if the current branch is a PR branch created by this action.
 # This may occur when using a PAT instead of GITHUB_TOKEN.
-if base.startswith(branch_prefix):
-    print("Branch '%s' was created by this action. Skipping." % base)
-    sys.exit() 
-
+# if base.startswith(branch_prefix):
+#     print("PR Branch '%s' is a base branch, Skipping." % base)
+#     sys.exit() 
+base = 'staging'
 # Fetch an optional environment variable to determine the branch suffix
 branch_suffix = os.getenv('BRANCH_SUFFIX', 'short-commit-hash')
 if branch_suffix == "short-commit-hash":
