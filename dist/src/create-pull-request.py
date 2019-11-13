@@ -101,9 +101,9 @@ def process_event(github_token, github_repository, repo, branch, base):
     pull_request_team_reviewers = os.environ.get('PULL_REQUEST_TEAM_REVIEWERS')
 
     # Push the local changes to the remote branch
-    print("Pushing changes.")
-    push_result = push_changes(repo.git, branch, commit_message)
-    print(push_result)
+    #print("Pushing changes.") #this is danau1008 testing
+    #push_result = push_changes(repo.git, branch, commit_message) #this is danau1008 testing
+    #print(push_result) #this is danau1008 testing
 
     # Create the pull request
     github_repo = Github(github_token).get_repo(github_repository)
