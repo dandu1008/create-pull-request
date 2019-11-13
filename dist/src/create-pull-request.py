@@ -210,7 +210,7 @@ else:
 # This may occur when using a PAT instead of GITHUB_TOKEN.
 if base.startswith(branch_prefix):
     print("Branch '%s' was created by this action. Skipping." % base)
-    sys.exit()
+    #sys.exit() ## this is dandu1008 testing
 
 # Fetch an optional environment variable to determine the branch suffix
 branch_suffix = os.getenv('BRANCH_SUFFIX', 'short-commit-hash')
