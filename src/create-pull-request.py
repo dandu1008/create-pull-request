@@ -44,7 +44,6 @@ def get_author_default(event_name, event_data):
         name = os.environ['GITHUB_ACTOR']
     return email, name
 
-
 def set_git_config(git, email, name):
     git.config('--global', 'user.email', '"%s"' % email)
     git.config('--global', 'user.name', '"%s"' % name)
@@ -205,13 +204,16 @@ elif github_ref.startswith('refs/pull/'):
     base = os.environ['GITHUB_HEAD_REF']
     repo.git.checkout(base)
 else:
-    base = github_ref[11:]
+    # base = github_ref[11:]
+    print("repo object")
+    print(repo)
+    base = repo.default_branch
 
 # Skip if the current branch is a PR branch created by this action.
 # This may occur when using a PAT instead of GITHUB_TOKEN.
 if base.startswith(branch_prefix):
     print("Branch '%s' was created by this action. Skipping." % base)
-    #sys.exit() ## this is dandu1008 testing
+    sys.exit() 
 
 # Fetch an optional environment variable to determine the branch suffix
 branch_suffix = os.getenv('BRANCH_SUFFIX', 'short-commit-hash')
