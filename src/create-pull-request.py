@@ -218,7 +218,7 @@ branch_prefix = os.getenv(
 # if base.startswith(branch_prefix):
 #     print("PR Branch '%s' is a base branch, Skipping." % base)
 #     sys.exit() 
-base = "{repository['default_branch']}".format(**event_data)
+base = "{repository[default_branch]}".format(**event_data)
 # Fetch an optional environment variable to determine the branch suffix
 branch_suffix = os.getenv('BRANCH_SUFFIX', 'short-commit-hash')
 if branch_suffix == "short-commit-hash":
