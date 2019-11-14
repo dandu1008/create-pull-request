@@ -189,12 +189,9 @@ base = "{repository[default_branch]}".format(**event_data)
 remote_exists = remote_branch_exists(repo, branch)
 
 # Checkout branch
-print("active branch:" + repo.active_branch)
 checkout_branch(repo.git, remote_exists, branch)
-print("active branch:" + repo.active_branch)
 
 # Check if there are changes to pull request
-# if repo.is_dirty() or len(repo.untracked_files) > 0:
 print("Repository has modified or untracked files.")
 process_event(
     github_token,
@@ -202,5 +199,3 @@ process_event(
     repo,
     branch,
     base)
-# else:
-#     print("Repository has no modified or untracked files. Skipping.")
