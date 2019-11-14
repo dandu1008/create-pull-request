@@ -5,7 +5,6 @@ import os
 import random
 import string
 import sys
-import time
 from git import Repo
 from github import Github
 from github import GithubException
@@ -43,6 +42,7 @@ def get_author_default(event_name, event_data):
         email = os.environ['GITHUB_ACTOR'] + '@users.noreply.github.com'
         name = os.environ['GITHUB_ACTOR']
     return email, name
+
 
 def set_git_config(git, email, name):
     git.config('--global', 'user.email', '"%s"' % email)
@@ -105,7 +105,7 @@ def process_event(github_token, github_repository, repo, branch, base):
     # print(push_result) #this is danau1008 testing
 
     # Create the pull request
-    print("Creating Pull Request for {} with reference base to {}".format(branch,base))
+    print("Creating Pull Request for {} with reference base to {}".format(branch, base))
     github_repo = Github(github_token).get_repo(github_repository)
     try:
         pull_request = github_repo.create_pull(
@@ -114,18 +114,18 @@ def process_event(github_token, github_repository, repo, branch, base):
             base=base,
             head=branch)
         print("Created pull request #%d (%s => %s)" %
-            (pull_request.number, branch, base))
+              (pull_request.number, branch, base))
     except GithubException as e:
         if e.status == 422:
             # Format the branch name
             head_branch = "%s:%s" % (github_repository.split("/")[0], branch)
             # Get the pull request
             pull_request = github_repo.get_pulls(
-                state='open', 
+                state='open',
                 base=base,
                 head=head_branch)[0]
             print("Updated pull request #%d (%s => %s)" %
-                (pull_request.number, branch, base))
+                  (pull_request.number, branch, base))
         else:
             print(str(e))
             sys.exit(1)
@@ -169,15 +169,15 @@ def process_event(github_token, github_repository, repo, branch, base):
 
 
 # Fetch environment variables
-print ("Python process is initiated")
+print("Python process is initiated")
 github_token = os.environ['GITHUB_TOKEN']
 github_repository = os.environ['GITHUB_REPOSITORY']
 github_ref = os.environ['GITHUB_REF']
 event_name = os.environ['GITHUB_EVENT_NAME']
 # Get the JSON event data
 event_data = get_github_event(os.environ['GITHUB_EVENT_PATH'])
-print ("github event data")
-print (event_data)
+print("github event data")
+print(event_data)
 
 # Set the repo to the working directory
 repo = Repo(os.getcwd())
@@ -187,9 +187,9 @@ author_email, author_name = get_author_default(event_name, event_data)
 author_email = os.getenv('COMMIT_AUTHOR_EMAIL', author_email)
 author_name = os.getenv('COMMIT_AUTHOR_NAME', author_name)
 # Set git configuration
-print ("repo git")
-print (repo)
-print (repo.git)
+print("repo git")
+print(repo)
+print(repo.git)
 set_git_config(repo.git, author_email, author_name)
 # Update URL for the 'origin' remote
 set_git_remote_url(repo.git, github_token, github_repository)
@@ -217,7 +217,7 @@ branch = os.getenv(
 # This may occur when using a PAT instead of GITHUB_TOKEN.
 # if base.startswith(branch_prefix):
 #     print("PR Branch '%s' is a base branch, Skipping." % base)
-#     sys.exit() 
+#     sys.exit()
 base = "{repository[default_branch]}".format(**event_data)
 # Fetch an optional environment variable to determine the branch suffix
 # branch_suffix = os.getenv('BRANCH_SUFFIX', 'short-commit-hash')
