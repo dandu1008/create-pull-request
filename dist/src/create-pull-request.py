@@ -260,13 +260,13 @@ remote_exists = remote_branch_exists(repo, branch)
 checkout_branch(repo.git, remote_exists, branch)
 
 # Check if there are changes to pull request
-if repo.is_dirty() or len(repo.untracked_files) > 0:
-    print("Repository has modified or untracked files.")
-    process_event(
-        github_token,
-        github_repository,
-        repo,
-        branch,
-        base)
-else:
-    print("Repository has no modified or untracked files. Skipping.")
+# if repo.is_dirty() or len(repo.untracked_files) > 0:
+print("Repository has modified or untracked files.")
+process_event(
+    github_token,
+    github_repository,
+    repo,
+    branch,
+    base)
+# else:
+#     print("Repository has no modified or untracked files. Skipping.")
